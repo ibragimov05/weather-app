@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:weather_app/controllers/fetch_weather.dart';
-import 'package:weather_app/controllers/weather_service.dart';
 import 'package:weather_app/models/weather_model.dart';
 import 'package:weather_app/utils/extensions/sized_box_extension.dart';
-import 'package:weather_app/views/widgets/location_text.dart';
+import 'package:weather_app/utils/functions/day_time_checker.dart';
+import 'package:weather_app/views/widgets/custom_weather_container.dart';
 
 class WeatherPage extends StatefulWidget {
   const WeatherPage({super.key});
@@ -15,12 +14,13 @@ class WeatherPage extends StatefulWidget {
 }
 
 class _WeatherPageState extends State<WeatherPage> {
-  final WeatherService _weatherService = WeatherService();
   final FetchWeather _fetchWeatherController = FetchWeather();
   List<WeatherModel> _weatherModel = [];
+  num _airQualityIndex = 0;
   bool isFound = false;
   bool animatedContainerDay = true;
   bool animatedContainerNight = false;
+  Color _backgroundColor = checkDayTime();
 
   void _fetchWeather() async {
     List<WeatherModel> weatherModel =
@@ -33,105 +33,82 @@ class _WeatherPageState extends State<WeatherPage> {
     }
   }
 
-  void _nightTimeWeather() {
-    for (var each in _weatherModel) {
-      print('${each.temperature}, ${each.dtTxt}');
-    }
+  void _fetchAqi() async {
+    _airQualityIndex = await _fetchWeatherController.fetchAqi();
   }
 
   @override
   void initState() {
     super.initState();
+    _fetchAqi();
     _fetchWeather();
-    _nightTimeWeather();
   }
 
   Future<void> _refresh() async {
     _fetchWeather();
-    await Future.delayed(const Duration(seconds: 2));
-    _nightTimeWeather();
+    _fetchAqi();
+    _backgroundColor = checkDayTime();
+    await Future.delayed(
+      const Duration(seconds: 2),
+    );
+  }
+
+  void onDayTap() {
+    animatedContainerDay = true;
+    animatedContainerNight = false;
+    setState(() {});
+  }
+
+  void onNightTap() {
+    animatedContainerDay = false;
+    animatedContainerNight = true;
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF2F3237),
+      backgroundColor: _backgroundColor,
       body: RefreshIndicator(
+        backgroundColor: Colors.white,
+        color: Colors.black,
+        strokeWidth: 2,
         onRefresh: _refresh,
         child: Center(
           child: Padding(
             padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w, top: 20.h),
-            child: ListView(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      animatedContainerDay = true;
-                      animatedContainerNight = false;
-                    });
-                  },
-                  child: AnimatedContainer(
-                    width: double.infinity,
-                    height: animatedContainerDay ? 500.h : 200.h,
-                    padding: EdgeInsets.all(20.sp),
-                    decoration: BoxDecoration(
-                      color: Color(0xFF3B8BDD),
-                      borderRadius: BorderRadius.circular(30.r),
-                    ),
-                    duration: const Duration(milliseconds: 500),
-                    child: Column(
-                      children: [
-                        if (animatedContainerDay)
-                          LocationText(
-                            currentLocation:
-                                isFound ? _weatherModel[0].cityName : '',
-                            isNight: false,
-                          ),
-                        Text(
-                          '${isFound ? _weatherModel[0].temperature : 'loading'}C',
-                          style: const TextStyle(color: Colors.yellow),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                30.height(),
+            child: isFound
+                ? ListView(
+                    children: [
+                      /// day time weather info
+                      CustomWeatherContainer(
+                        animatedContainerPressed: animatedContainerDay,
+                        isNight: false,
+                        weatherModel: _weatherModel,
+                        onButtonTapped: onDayTap,
+                        airQualityIndex: _airQualityIndex,
+                      ),
+                      30.height(),
 
-                /// night time
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      animatedContainerDay = false;
-                      animatedContainerNight = true;
-                    });
-                  },
-                  child: AnimatedContainer(
-                    width: double.infinity,
-                    padding: EdgeInsets.all(20.sp),
-                    height: animatedContainerNight ? 500.h : 200.h,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30.r),
-                      color: Color(0xFF171B26),
-                    ),
-                    duration: const Duration(milliseconds: 500),
-                    child: Column(
-                      children: [
-                        if (animatedContainerNight)
-                          LocationText(
-                            currentLocation:
-                                isFound ? _weatherModel[0].cityName : '',
-                            isNight: true,
-                          ),
-                        Text(
-                          '${isFound ? _weatherModel[0].temperature : 'loading'}C',
-                          style: const TextStyle(color: Colors.yellow),
-                        ),
-                      ],
-                    ),
+                      /// night time weather info
+                      CustomWeatherContainer(
+                        animatedContainerPressed: animatedContainerNight,
+                        isNight: true,
+                        weatherModel: _weatherModel,
+                        onButtonTapped: onNightTap,
+                        airQualityIndex: _airQualityIndex,
+                      ),
+                    ],
+                  )
+
+                /// loading widget
+                : CircularProgressIndicator(
+                    color: Colors.grey.withOpacity(0.5),
+                    backgroundColor: Colors.white,
+                    strokeAlign: 1.sp,
+                    strokeWidth: 5.sp,
+                    strokeCap: StrokeCap.square,
                   ),
-                ),
-              ],
-            ),
           ),
         ),
       ),

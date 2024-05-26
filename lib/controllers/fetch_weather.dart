@@ -1,4 +1,5 @@
 import 'package:weather_app/controllers/weather_service.dart';
+import 'package:weather_app/models/aqi_model.dart';
 import 'package:weather_app/models/weather_model.dart';
 
 class FetchWeather {
@@ -16,5 +17,10 @@ class FetchWeather {
       print(e);
       return [];
     }
+  }
+
+  Future<num> fetchAqi() async {
+    final num aqi = await WeatherService().getAirQualityIndex();
+    return aqi;
   }
 }

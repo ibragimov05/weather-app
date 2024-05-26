@@ -13,23 +13,38 @@ class LocationText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          'My location',
+          isNight ? 'Night' : 'Day',
           style: TextStyle(
             color: Colors.white,
-            fontWeight: FontWeight.w600,
-            fontSize: 8.sp
+            fontWeight: FontWeight.w700,
           ),
         ),
-        Text(
-          currentLocation == '' ? 'Loading city...' : currentLocation,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 22.sp,
-            fontWeight: FontWeight.w800,
-          ),
+        // SizedBox(),
+        Column(
+          children: [
+            Text(
+              'My location',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 8.sp),
+            ),
+            Text(
+              currentLocation == '' ? 'Loading city...' : currentLocation,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 22.sp,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          width: 20.w,
         ),
       ],
     );

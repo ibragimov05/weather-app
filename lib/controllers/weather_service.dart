@@ -3,13 +3,15 @@ import 'dart:convert';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
+import 'package:weather_app/models/aqi_model.dart';
 
 import '../models/weather_model.dart';
 
 class WeatherService {
   final String _QUERY_URl_WEATHER =
       'https://api.openweathermap.org/data/2.5/forecast';
-  final String _QUERY_URL_AQI = '';
+  final String _QUERY_URL_AQI =
+      'http://api.airvisual.com/v2/nearest_city?key=2dc59163-6980-4447-85cb-ce3525eabe0c';
   final String _api_key = 'd06f8846dd44a3bc15a190ad6dde1af2';
 
   Future<List<WeatherModel>> getWeather({
@@ -29,6 +31,7 @@ class WeatherService {
       var responseBody = jsonDecode(response.body);
       DateTime currentDataTime = DateTime.now();
       int count = 0;
+
       /// adding result to list
       for (var each in responseBody['list']) {
         /// getting weather info before current data
@@ -40,10 +43,13 @@ class WeatherService {
               temperature: (each['main']['temp'] - 273.15).round(),
               mainCondition: each['weather'][0]['main'],
               dtTxt: each['dt_txt'],
+              windSpeed: (each['wind']['speed'] * 3.6).round(),
+              humidity: each['main']['humidity'],
             ),
           );
         }
-        if(count == 9){
+        if (count == 9) {
+          print(each);
           break;
         }
       }
@@ -53,7 +59,17 @@ class WeatherService {
     }
   }
 
-  // Future<AQI> getAirQualityIndex() async {}
+  Future<num> getAirQualityIndex() async {
+    final Uri query = Uri.parse(_QUERY_URL_AQI);
+    final response = await http.get(query);
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+
+      return data['data']['current']['pollution']['aqius'];
+    } else {
+      throw Exception('Error in getAirQualityIndex');
+    }
+  }
 
   Future<Map<String, dynamic>> getCurrentCity() async {
     LocationPermission permission = await Geolocator.checkPermission();
