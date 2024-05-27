@@ -49,7 +49,6 @@ class WeatherService {
           );
         }
         if (count == 9) {
-          print(each);
           break;
         }
       }

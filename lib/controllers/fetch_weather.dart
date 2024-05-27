@@ -1,5 +1,4 @@
 import 'package:weather_app/controllers/weather_service.dart';
-import 'package:weather_app/models/aqi_model.dart';
 import 'package:weather_app/models/weather_model.dart';
 
 class FetchWeather {
@@ -12,6 +11,9 @@ class FetchWeather {
         latitude: locationInfo['latitude'],
         longitude: locationInfo['longitude'],
       );
+      for(var each in weatherModel){
+        print('${each.temperature}, ${each.dtTxt}, ${each.mainCondition}');
+      }
       return weatherModel;
     } catch (e) {
       print(e);
