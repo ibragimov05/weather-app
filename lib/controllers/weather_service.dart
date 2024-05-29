@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
-import 'package:weather_app/models/aqi_model.dart';
 
 import '../models/weather_model.dart';
 
@@ -34,6 +33,9 @@ class WeatherService {
 
       /// adding result to list
       for (var each in responseBody['list']) {
+
+
+
         /// getting weather info before current data
         if (currentDataTime.isBefore(DateTime.parse(each['dt_txt']))) {
           count++;
@@ -49,6 +51,7 @@ class WeatherService {
           );
         }
         if (count == 9) {
+
           break;
         }
       }
@@ -93,4 +96,8 @@ class WeatherService {
       'longitude': position.longitude,
     };
   }
+
+  /// night time weather calculator
+
 }
+
