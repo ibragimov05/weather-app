@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/controllers/settings_controller.dart';
 import 'package:weather_app/notifiers/settings_notifier.dart';
 import 'package:weather_app/utils/functions/isdark.dart';
 
@@ -10,11 +9,12 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final settingsController = SettingsNotifier.of(context);
     return Scaffold(
-      backgroundColor: IsDark.check(context) ? Color(0xFF141218) : Colors.white,
+      backgroundColor:
+          IsDark.check(context) ? const Color(0xFF141218) : Colors.white,
       appBar: AppBar(
-        backgroundColor: IsDark.check(context) ? Color(0xFF141218) : Colors.white,
-
-        title: Text('Settings page'),
+        backgroundColor:
+            IsDark.check(context) ? const Color(0xFF141218) : Colors.white,
+        title: const Text('Settings page'),
         centerTitle: true,
       ),
       body: ListenableBuilder(
@@ -24,11 +24,10 @@ class SettingsPage extends StatelessWidget {
             children: [
               SwitchListTile(
                 activeColor: Colors.black,
-                // hoverColor: Colors.red,
                 activeTrackColor: Colors.white,
                 inactiveThumbColor: Colors.black,
                 inactiveTrackColor: Colors.white,
-                title: Text('Dark Mode'),
+                title: const Text('Dark Mode'),
                 value: settingsController.settingsModel.themeMode ==
                     ThemeMode.dark,
                 onChanged: (value) {

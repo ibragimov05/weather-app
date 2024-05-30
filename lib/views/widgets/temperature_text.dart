@@ -12,7 +12,7 @@ class TemperatureText extends StatelessWidget {
       text: TextSpan(
         children: [
           TextSpan(
-            text: '$text',
+            text: text,
             style: TextStyle(
               // fontFamily: 'Oswald',
               fontSize: 50.sp,

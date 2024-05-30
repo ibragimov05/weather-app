@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:weather_app/utils/extensions/sized_box_extension.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class CustomColumnMaker extends StatelessWidget {
   final String infoType;
@@ -32,7 +32,8 @@ class CustomColumnMaker extends StatelessWidget {
           decoration: isSelected
               ? BoxDecoration(
                   color: aqiColor(aqiNum: infoNumber),
-                  borderRadius: BorderRadius.circular(10.r))
+                  borderRadius: BorderRadius.circular(10.r),
+                )
               : null,
           child: RichText(
             text: TextSpan(
@@ -47,7 +48,7 @@ class CustomColumnMaker extends StatelessWidget {
                 ),
                 TextSpan(
                   text: symbolText,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -61,15 +62,15 @@ class CustomColumnMaker extends StatelessWidget {
 
   Color aqiColor({required num aqiNum}) {
     if (aqiNum >= 180) {
-      return Color(0xFFa87383);
+      return const Color(0xFFa87383);
     } else if (aqiNum >= 150 && 180 >= aqiNum) {
-      return Color(0xFFf65e5f);
+      return const Color(0xFFf65e5f);
     } else if (aqiNum >= 120 && 150 >= aqiNum) {
-      return Color(0xFFf99049);
+      return const Color(0xFFf99049);
     } else if (aqiNum >= 50 && 120 >= aqiNum) {
-      return Color(0xFFfdd64b);
+      return const Color(0xFFfdd64b);
     } else {
-      return Color(0xFF9cd84e);
+      return const Color(0xFF9cd84e);
     }
   }
 }

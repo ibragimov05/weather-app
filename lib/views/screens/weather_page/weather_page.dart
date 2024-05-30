@@ -5,12 +5,9 @@ import 'package:lottie/lottie.dart';
 import 'package:weather_app/controllers/fetch_weather.dart';
 import 'package:weather_app/models/weather_model.dart';
 import 'package:weather_app/utils/assets/assets.dart';
-import 'package:weather_app/utils/constants/app_constants.dart';
 import 'package:weather_app/utils/extensions/sized_box_extension.dart';
 import 'package:weather_app/utils/functions/isdark.dart';
 import 'package:weather_app/views/screens/settings_page/settings_page.dart';
-
-// import 'package:weather_app/utils/functions/day_time_checker.dart';
 import 'package:weather_app/views/widgets/custom_weather_container.dart';
 import 'package:weather_app/views/widgets/forecast_by_time.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
@@ -67,7 +64,38 @@ class _WeatherPageState extends State<WeatherPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: IsDark.check(context) ? Color(0xFF141218) : Colors.white,
+      backgroundColor:
+          IsDark.check(context) ? const Color(0xFF141218) : Colors.white,
+      appBar:isFound ? AppBar(
+        title: const Text(
+          'Weather-App',
+          style: TextStyle(fontWeight: FontWeight.w700),
+        ),
+        centerTitle: true,
+        backgroundColor:
+            IsDark.check(context) ? const Color(0xFF141218) : Colors.white,
+        actions: [
+          /// settings button
+          Padding(
+            padding: EdgeInsets.only(right: 20.w),
+            child: ZoomTapAnimation(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (BuildContext context) => const SettingsPage(),
+                  ),
+                );
+              },
+              child: Icon(
+                Icons.settings,
+                size: 30.sp,
+                color: IsDark.check(context) ? Colors.white : Colors.black,
+              ),
+            ),
+          ),
+        ],
+      ) : null,
       body: RefreshIndicator(
         backgroundColor: Colors.white,
         color: Colors.black,
@@ -85,32 +113,6 @@ class _WeatherPageState extends State<WeatherPage> {
                       ),
                       child: Column(
                         children: [
-                          /// settings button
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              ZoomTapAnimation(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    CupertinoPageRoute(
-                                      builder: (BuildContext context) =>
-                                          SettingsPage(),
-                                    ),
-                                  );
-                                },
-                                child: Icon(
-                                  Icons.settings,
-                                  size: 30.sp,
-                                  color: IsDark.check(context)
-                                      ? Colors.white
-                                      : Colors.black,
-                                ),
-                              ),
-                            ],
-                          ),
-                          25.height(),
-
                           /// day time weather info
                           CustomWeatherContainer(
                             animatedContainerPressed: animatedContainerDay,
@@ -161,19 +163,13 @@ class _WeatherPageState extends State<WeatherPage> {
                       width: 100.w,
                       clipBehavior: Clip.hardEdge,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30.r)),
+                        borderRadius: BorderRadius.circular(30.r),
+                      ),
                       child: Image.asset('assets/images/logo.png'),
                     ),
                     Lottie.asset(Assets.lottieLoading),
                   ],
                 ),
-          // : CircularProgressIndicator(
-          //     color: Colors.grey.withOpacity(0.5),
-          //     backgroundColor: Colors.white,
-          //     strokeAlign: 1.sp,
-          //     strokeWidth: 5.sp,
-          //     strokeCap: StrokeCap.square,
-          //   ),
         ),
       ),
     );

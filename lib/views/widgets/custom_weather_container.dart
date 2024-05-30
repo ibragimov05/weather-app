@@ -31,12 +31,12 @@ class CustomWeatherContainer extends StatelessWidget {
       height: animatedContainerPressed ? 350.h : 135.h,
       padding: EdgeInsets.all(20.sp),
       decoration: BoxDecoration(
-        color: isNight ? Color(0xFF242b40) : Color(0xFF3B8BDD),
+        color: isNight ? const Color(0xFF242b40) : const Color(0xFF3B8BDD),
         borderRadius: BorderRadius.circular(30.r),
       ),
       duration: const Duration(milliseconds: 500),
       child: SingleChildScrollView(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         child: animatedContainerPressed
             ? SizedBox(
                 height: 300.h,
@@ -122,7 +122,9 @@ class CustomWeatherContainer extends StatelessWidget {
                         ),
                       10.height(),
                       TemperatureText(
-                        text: nightTimeWeather.toString(),
+                        text: (nightTimeWeather - (nightTimeWeather / 3))
+                            .round()
+                            .toString(),
                       ),
                       Text(
                         weatherModel[0].mainCondition,

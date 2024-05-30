@@ -27,11 +27,11 @@ class CustomContainerForecastByTime extends StatelessWidget {
       decoration: BoxDecoration(
         color: IsDark.check(context)
             ? isFirst
-                ? Color(0xFF242b40)
-                : Color(0xFF313a57)
+                ? const Color(0xFF242b40)
+                : const Color(0xFF313a57).withOpacity(0.4)
             : isFirst
-                ? Color(0xFF242b40).withOpacity(0.9)
-                : Color(0xFF242b40).withOpacity(0.3),
+                ? const Color(0xFF242b40).withOpacity(0.9)
+                : const Color(0xFF242b40).withOpacity(0.3),
         borderRadius: BorderRadius.circular(10.r),
       ),
       child: Column(
@@ -46,15 +46,15 @@ class CustomContainerForecastByTime extends StatelessWidget {
                   ? Colors.white
                   : IsDark.check(context)
                       ? Colors.white
-                      : Color(0xFF242b40),
+                      : const Color(0xFF242b40),
               fontWeight: FontWeight.w600,
             ),
           ),
           Lottie.asset(
-              currentMainWeather(mainWeather: mainCondition, isNight: false),
-              height: 40.h,
-              width: 40.w),
-
+            currentMainWeather(mainWeather: mainCondition, isNight: false),
+            height: 40.h,
+            width: 40.w,
+          ),
           Text(
             '$temperature°',
             style: TextStyle(
@@ -62,7 +62,7 @@ class CustomContainerForecastByTime extends StatelessWidget {
                   ? Colors.white
                   : IsDark.check(context)
                       ? Colors.white
-                      : Color(0xFF242b40),
+                      : const Color(0xFF242b40),
               fontSize: 16.sp,
               fontWeight: FontWeight.w700,
             ),

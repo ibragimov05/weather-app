@@ -13,7 +13,6 @@ class FetchWeather {
       );
 
       return weatherModel;
-      // WeatherService().calculateNightTimeWeather(weatherInfo: weatherModel),
     } catch (e) {
       print(e);
       return [];

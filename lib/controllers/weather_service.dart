@@ -33,9 +33,6 @@ class WeatherService {
 
       /// adding result to list
       for (var each in responseBody['list']) {
-
-
-
         /// getting weather info before current data
         if (currentDataTime.isBefore(DateTime.parse(each['dt_txt']))) {
           count++;
@@ -51,7 +48,6 @@ class WeatherService {
           );
         }
         if (count == 9) {
-
           break;
         }
       }
@@ -98,6 +94,4 @@ class WeatherService {
   }
 
   /// night time weather calculator
-
 }
-

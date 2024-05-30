@@ -18,7 +18,7 @@ class LocationText extends StatelessWidget {
       children: [
         Text(
           isNight ? 'Night' : 'Day',
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.w700,
           ),
@@ -50,11 +50,3 @@ class LocationText extends StatelessWidget {
     );
   }
 }
-
-//if (animatedContainerDay)
-//                           Text(
-//                             isFound
-//                                 ? _weatherModel[0].cityName.toString()
-//                                 : "loading city",
-//                             style: const TextStyle(color: Colors.yellow),
-//                           ),
